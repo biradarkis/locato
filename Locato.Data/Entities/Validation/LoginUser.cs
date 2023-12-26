@@ -12,7 +12,7 @@ namespace Locato.Data.Entities.Validation
     public class LoginUser : Entity, IValidatableObject
     {
         [EmailAddress, MaxLength(255)]
-        public string Username { get; set; }
+        public required string Username { get; set; }
         public long UserId { get; set; }
         public virtual User User { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
