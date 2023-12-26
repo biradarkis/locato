@@ -38,7 +38,7 @@ namespace Locato.Data.Entities.Transport.Trips
 
         public bool InProgress { get; set; }
 
-        public string EndReason { get; set; }
+        public string? EndReason { get; set; }
 
         public DateTimeOffset? StartedOn { get; set; }
 

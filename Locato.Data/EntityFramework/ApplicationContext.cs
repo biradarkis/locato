@@ -106,7 +106,7 @@ namespace Locato.Data.EntityFramework
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=ufony-local2;Username=postgres;Password=2455");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=ufony-local2;Username=postgres;Password=2455").UseSnakeCaseNamingConvention();
             base.OnConfiguring(optionsBuilder);
         }
 

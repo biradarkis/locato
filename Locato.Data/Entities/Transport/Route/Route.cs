@@ -47,7 +47,7 @@ namespace Locato.Data.Entities.Transport.Routes
 
         public bool CalculateEta { get; set; }
 
-        public string DrawnRoute { get; set; }
+        public string? DrawnRoute { get; set; }
         /// <summary>
         /// <see cref="RouteType"/>
         /// </summary>

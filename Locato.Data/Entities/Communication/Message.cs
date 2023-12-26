@@ -36,7 +36,7 @@ namespace Locato.Data.Entities.Communication
         /// <summary>
         /// Only For Individual Messages
         /// </summary>
-        public DateTime DeliverOn { get; set; }
+        public DateTime? DeliverOn { get; set; }
         public long? AttachmentId { get; set; }
         public virtual Attachment Attachment { get; set; }
 

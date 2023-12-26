@@ -18,7 +18,7 @@ namespace Locato.Data.Entities.Communication
         public string NotificationType { get; set; }
         public string Body { get; set; }
         public int Retries { get; set; }
-        public bool IsSucess { get; set; }
+        public bool IsSuccess { get; set; }
         public virtual User User { get; set; }
         public long UserId { get; set; }    
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

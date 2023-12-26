@@ -27,15 +27,15 @@ namespace Locato.Data.Entities.Business
         }
         [MaxLength(255)]
         public string Name { get; set; }
-        public string ShortName { get; set; }
+        public string? ShortName { get; set; }
 
         public Phone Phone { get; set; }
 
-        public Phone AlternatePhone { get; set; }
+        public Phone? AlternatePhone { get; set; }
 
         public Location Address { get; set; }
-        public string Website { get; set; }
-        public string API_URL { get; set; }
+        public string? Website { get; set; }
+        public string? API_URL { get; set; }
         public long? LogoId { get; set; }
         public virtual StaticMedia Logo { get; set; }
         public virtual ICollection<Route> Routes { get; set; }
@@ -44,10 +44,10 @@ namespace Locato.Data.Entities.Business
         public virtual ICollection<User> Users { get; set; }
         public virtual ICollection<Event> OrganiationEvents { get; set; }
         public bool IsActive { get; set; }
-        public string Locale { get; set; }
+        public string? Locale { get; set; }
         public string Currency { get; set; }
         public string PANNumber { get; set; }
-        public string TANNumber { get; set; }
+        public string? TANNumber { get; set; }
         public string GSTNumber { get; set; }
 
 

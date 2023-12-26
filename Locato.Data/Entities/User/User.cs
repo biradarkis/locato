@@ -32,7 +32,7 @@ namespace Locato.Data.Entities.UserEntities
         public Phone Phone { get; set; }
         public int RoleId { get;set; }
 
-        public Phone AlternatePhone { get; set; }
+        public Phone? AlternatePhone { get; set; }
 
         public DateTime? LastSeen { get; set; }
 

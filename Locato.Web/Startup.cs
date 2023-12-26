@@ -28,7 +28,8 @@ namespace Locato.Web
             var connectionString = Configuration.GetConnectionString("Locato");
             services.AddDbContext <ApplicationContext>(options =>
             {
-                options.UseNpgsql(connectionString);
+                options.UseNpgsql(connectionString)
+                .UseSnakeCaseNamingConvention();
             });
 
             services.AddScoped<IApplicationContext>(pr => pr.GetService<ApplicationContext>()!);

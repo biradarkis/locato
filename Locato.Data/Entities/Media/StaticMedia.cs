@@ -21,7 +21,7 @@ namespace Locato.Data.Entities.Media
         public required string Key { get; set; }
 
         public byte[] RawContent { get; set; }
-        public required string StorageURL { get; set; }
+        public  string? StorageURL { get; set; }
 
         public bool Processed { get; set; }
 

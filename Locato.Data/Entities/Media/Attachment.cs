@@ -24,9 +24,9 @@ namespace Locato.Data.Entities.Media
         public bool IsImage => MimeType.StartsWith("image", StringComparison.OrdinalIgnoreCase);
 
         // TODO: Redesign so that app doesn't rely on this pass thru property
-        public string AppSideIdentifier { get; set; }
-        public string StorageURL { get; set; }
-        public string ThumbnailStorageURL { get; set; }
+        public string? AppSideIdentifier { get; set; }
+        public string? StorageURL { get; set; }
+        public string? ThumbnailStorageURL { get; set; }
     }
 
     internal class AttachmentConfiguration : IEntityTypeConfiguration<Attachment>

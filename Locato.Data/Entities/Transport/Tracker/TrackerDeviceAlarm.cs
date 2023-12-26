@@ -22,7 +22,7 @@ namespace Locato.Data.Entities.Transport.Tracker
 
         public TrackerDeviceAlarmType AlarmType { get; set; }
 
-        public string Meta { get; set; }
+        public string? Meta { get; set; }
 
         public TrackerDeviceAlarm()
         {
