@@ -13,7 +13,7 @@ namespace Locato.Data.EntityFramework.Seed
         private readonly ISender _mediator ;
         public async Task Seed(CancellationToken cancellationToken)
         {
-         
+            await SeedOrganization(cancellationToken);         
         }
     }
 }

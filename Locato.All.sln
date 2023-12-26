@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Locato.Data", "Locato.Data.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Locato.Infrastructure", "..\Locato.Infrastructure\Locato.Infrastructure.csproj", "{E1DB8DEA-E931-4B51-98EE-43801B1785F7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "..\Services\Services.csproj", "{29971CBA-A6DD-46D4-8043-3DA15691653F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "..\Services\Services.csproj", "{29971CBA-A6DD-46D4-8043-3DA15691653F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "..\Shared\Shared.csproj", "{D3B9B3C6-1C30-435F-9086-CB7E5339B76E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "..\Shared\Shared.csproj", "{D3B9B3C6-1C30-435F-9086-CB7E5339B76E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Locato.Web", "..\Locato.Web\Locato.Web.csproj", "{BD6D46A2-CC77-4CC7-BF83-3DB0B95869EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locato.Web", "..\Locato.Web\Locato.Web.csproj", "{BD6D46A2-CC77-4CC7-BF83-3DB0B95869EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

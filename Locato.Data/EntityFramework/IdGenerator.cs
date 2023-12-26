@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Locato.Data.EntityFramework
 {
-    public class IdGenerator : IEnumerable<long>
+    public class IdGenerator : IIdGenerator<long>
     {
         #region Private Constant
 

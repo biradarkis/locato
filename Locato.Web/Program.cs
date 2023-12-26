@@ -1,36 +1,84 @@
 
+using Locato.Data.EntityFramework;
+using Microsoft.EntityFrameworkCore;
+using Shared.helpers;
+
 namespace Locato.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var switchMappings = new Dictionary<string, string>()
+            {
+               { "--api", "Args:EnableApi" },
+               { "--worker", "Args:EnableWorker" },
+               { "--createdb", "Args:CreateDb" },
+               { "--deletedb", "Args:DeleteDb" },
+               { "--seeddb", "Args:SeedDb" },
+            };
             // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
-            var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+
+            var app = Host.CreateDefaultBuilder(args).ConfigureAppConfiguration((host, config) =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                config.AddCommandLine(args, switchMappings);
+
+            }).ConfigureWebHostDefaults((webbuilder) =>
+            {
+                webbuilder.UseStartup<Startup>();
+            }).Build();
+
+            var config = app.Services.GetService<ConfigurationArgs>();
+
+            CancellationToken cancellationToken = default;
+
+            System.Console.WriteLine(config.EnableApi);
+
+            if (config.DeleteDb)
+            {
+                await DeleteDatabase(app, cancellationToken);
             }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
-            app.MapControllers();
-
-            app.Run();
+            if (config.CreateDb)
+            {
+                await CreateDatabase(app, cancellationToken);
+            }
+            //if (config.SeedDb)
+            //{
+            //    await SeedDatabase(app, cancellationToken);
+            //}
+         await app.RunAsync(cancellationToken);
         }
+
+        private static async Task DeleteDatabase(IHost app, CancellationToken cancellationToken)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                var context = services.GetService<IApplicationContext>();
+
+                await (context as DbContext).Database.EnsureDeletedAsync(cancellationToken);
+            }
+        }
+
+        private async static Task CreateDatabase(IHost app, CancellationToken cancellationToken)
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                var context = services.GetService<IApplicationContext>();
+
+                await (context as DbContext).Database.EnsureCreatedAsync(cancellationToken);
+
+                await context.SaveChangesAsync(cancellationToken);
+            }
+        }
+
     }
 }

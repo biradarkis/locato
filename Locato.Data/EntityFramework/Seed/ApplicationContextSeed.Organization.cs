@@ -10,9 +10,9 @@ namespace Locato.Data.EntityFramework.Seed
 {
     public partial class ApplicationContextSeed
     {
-        private async Task SeedOrganization(IApplicationContext context , ISender mediator)
+        private async Task SeedOrganization(CancellationToken cancellationToken)
         {
-            if (context.Organizations.Count() > 1)
+            if (_context.Organizations.Count() > 1)
                 return;
 
             _context.Organizations.Add(new Organization
@@ -40,9 +40,11 @@ namespace Locato.Data.EntityFramework.Seed
                     E164Format = 91123456789,
                     NationalNumber = 123456789,
                     RawInput ="+91123456789"
-                    
                 },
+
             });
+
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

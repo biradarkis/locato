@@ -87,10 +87,10 @@ namespace Locato.Data.EntityFramework
         public DbSet<UserOTP> UserOTPs { get; set; }
         public DbSet<UserTemporaryPassword> UserTemporaryPasswords { get; set; }
         #endregion
-        private readonly IdGenerator _idGenerator;
+        private readonly IIdGenerator<long> _idGenerator;
         private readonly ICurrentUserService _userService;
 
-        public ApplicationContext(IdGenerator idGenerator , ICurrentUserService userService) : base() 
+        public ApplicationContext(IIdGenerator<long> idGenerator , ICurrentUserService userService) : base() 
         {
           _idGenerator = idGenerator;
           _userService = userService;
