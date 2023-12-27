@@ -39,6 +39,8 @@ namespace Locato.Data.Entities.UserEntities
         public long ProfileId { get; set; }
         public virtual Profile Profile { get; set; }
 
+        public required string Password { get; set; }
+
         public bool EmailVerified { get; set; }
         public bool PhoneVerified { get; set; }
 
@@ -47,8 +49,6 @@ namespace Locato.Data.Entities.UserEntities
         /// Acceptable Values are members of <see cref="LoginStatus"/> enum.
         /// </summary>
         public string AccountStatus { get; set; }
-        public long BaseUserId { get; set; }
-        public virtual BaseUser BaseUser { get; set; }
         public Location Location { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
         public virtual Route Route { get; set; }

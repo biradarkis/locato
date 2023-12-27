@@ -10,6 +10,8 @@ using Locato.Infrastructure.Services.Implementations;
 using System.Reflection;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Locato.Web
 {
     public class Startup
@@ -33,7 +35,7 @@ namespace Locato.Web
             services.AddScoped<IIdGenerator<long>, IdGenerator>();
             services.AddSingleton(appSettings);
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddMediatR(typeof(Startup))            
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
             services.TryAddSingleton<IHttpContextAccessor , HttpContextAccessor>();
             services.AddSingleton(Args);
             services.AddSingleton<IJwtHandler, JwtHandler>();

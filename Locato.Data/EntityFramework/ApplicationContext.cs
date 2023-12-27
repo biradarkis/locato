@@ -27,7 +27,7 @@ namespace Locato.Data.EntityFramework
     {
         #region Users
         public DbSet<User> Users { get; set; }
-        public DbSet<BaseUser> BaseUsers { get; set; }
+        
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Photo> Photos{ get; set; }
         public DbSet<UserDeviceInfo> UserDeviceInfoes { get; set; }

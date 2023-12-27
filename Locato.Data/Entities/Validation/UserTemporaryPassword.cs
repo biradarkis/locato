@@ -14,8 +14,8 @@ namespace Locato.Data.Entities.Validation
     [Table("usertemppass")]
     public class UserTemporaryPassword : Entity
     {   
-        public long BaseUserId { get;set; }
-        public virtual BaseUser BaseUser { get;set; }   
+        public long UserId { get;set; }
+        public virtual User User { get;set; }   
         public required string Password { get;set; } 
         public DateTime ValidTill { get;set; } 
         public long CreatedById { get;set; }
@@ -27,7 +27,7 @@ namespace Locato.Data.Entities.Validation
         {
             builder.Property(x => x.Password).IsRequired();
             builder.HasOne(x => x.CreatedBy).WithMany().HasForeignKey(x=>x.CreatedById).IsRequired();
-            builder.HasOne(x => x.BaseUser).WithMany().HasForeignKey(x => x.BaseUserId).IsRequired();
+            builder.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId).IsRequired();
         }
     }
 }

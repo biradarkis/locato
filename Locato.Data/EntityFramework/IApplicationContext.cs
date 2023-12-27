@@ -21,7 +21,6 @@ namespace Locato.Data.EntityFramework
     public interface IApplicationDbContext
     {
         public DbSet<User> Users { get;  }
-        public DbSet<BaseUser> BaseUsers { get;  }
         public DbSet<Profile> Profiles { get;  }
         public DbSet<Photo> Photos { get;  }
         public DbSet<UserDeviceInfo> UserDeviceInfoes { get;  }

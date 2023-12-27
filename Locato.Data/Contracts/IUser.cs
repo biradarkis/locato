@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Locato.Data.Contracts
 {
-    internal interface IUser
+    public interface IUser
     {
+
     }
 }
