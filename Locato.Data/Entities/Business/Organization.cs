@@ -41,8 +41,9 @@ namespace Locato.Data.Entities.Business
         public virtual ICollection<Route> Routes { get; set; }
         public virtual ICollection<Vehicle> Vehicles { get; set; }
         public virtual ICollection<TrackerDevice> TrackerDevices { get; set; }
+        public virtual ICollection<OrganizationShift> Shifts { get; set; }
         public virtual ICollection<User> Users { get; set; }
-        public virtual ICollection<Event> OrganiationEvents { get; set; }
+        public virtual ICollection<Event> Events { get; set; }
         public bool IsActive { get; set; }
         public string? Locale { get; set; }
         public string Currency { get; set; }
@@ -56,6 +57,8 @@ namespace Locato.Data.Entities.Business
             IsActive = true;
             Users = new HashSet<User>();
             Routes = new HashSet<Route>();
+            Shifts = new  HashSet<OrganizationShift>(); 
+            Events = new HashSet<Event>();   
         }
 
     }
@@ -64,7 +67,7 @@ namespace Locato.Data.Entities.Business
     {
         public void Configure(EntityTypeBuilder<Organization> builder)
         {
-            builder.HasMany(x=>x.OrganiationEvents).WithOne(x=>x.Organization).HasForeignKey(x=>x.OrganizationId);
+            builder.HasMany(x=>x.Events).WithOne(x=>x.Organization).HasForeignKey(x=>x.OrganizationId);
             builder.HasMany(x=>x.Users).WithOne(x=>x.Organization).HasForeignKey(x=>x.OrganizationId).OnDelete(DeleteBehavior.Restrict);
             builder.HasMany(x => x.Routes).WithOne(x => x.Organization).HasForeignKey(x => x.OrganizationId).IsRequired();
             builder.OwnsOne(x => x.Phone);

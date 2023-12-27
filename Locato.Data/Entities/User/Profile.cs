@@ -12,10 +12,9 @@ namespace Locato.Data.Entities.UserEntities
 {
     public class Profile : Entity, IValidatableObject
     {
-        public string FirstName { get;set; }
+        public required string FirstName { get;set; }
         public string LastName { get;set; }
-        public string? MiddleName { get;set; }
-        public string FullName => $"{FirstName}{(!string.IsNullOrEmpty(MiddleName) ? " " + MiddleName : "")} {(!string.IsNullOrEmpty(LastName) ? " " + LastName : "")}";
+        public string FullName => $"{FirstName} {(!string.IsNullOrEmpty(LastName) ? " " + LastName : "")}";
         public DateTime? DateOfBirth { get; set; }
         public int Age =>  DateOfBirth.HasValue ? DateTime.Now.Year - DateOfBirth.Value.Year:0;
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
