@@ -39,6 +39,10 @@ namespace Locato.Data.Entities.UserEntities
             return  Array.Empty<ValidationResult>();
         }
 
+        /// <summary>
+        /// remote storageURL of the media
+        /// </summary>
+        public string StorageURL { get; set; }
 
     }
 

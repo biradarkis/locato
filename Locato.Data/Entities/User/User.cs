@@ -8,28 +8,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using uFony.Data.Web;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Locato.Data.Entities.UserEntities
 {
-    public class User : Entity, IValidatableObject , IEquatable<User>
+    public class User : Entity, IValidatableObject, IEquatable<User>, IUser
     {
         [Required, EmailAddress]
-        public string Email { get; set; }
+        public string Email { get;  protected set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             return Array.Empty<ValidationResult>();
 
         }
         [Phone]
-        public Phone Phone { get; set; }
+        public Phone Phone { get; protected set; }
         public int RoleId { get;set; }
 
         public Phone? AlternatePhone { get; set; }
@@ -41,22 +35,25 @@ namespace Locato.Data.Entities.UserEntities
 
         public required string Password { get; set; }
 
-        public bool EmailVerified { get; set; }
-        public bool PhoneVerified { get; set; }
+        public bool EmailVerified { get; set; } = false;
+        public bool PhoneVerified { get; set; } = false;
 
         /// <summary>
         /// Determines whether the account is in good standing or requires intervention.
         /// Acceptable Values are members of <see cref="LoginStatus"/> enum.
         /// </summary>
-        public string AccountStatus { get; set; }
+        public string AccountStatus { get; set; } = "created";
         public Location Location { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
         public virtual Route Route { get; set; }
-        public long RouteId { get; set; }
+        public long? RouteId { get; set; }
         public virtual Organization Organization { get; set; }
         public virtual ICollection<Event> Events { get; set; }
         public long OrganizationId  { get; set; }
-        
+        /// <summary>
+        /// Password reset Date
+        /// </summary>
+        public DateTime? ClearToken { get;set; }
         public virtual ICollection<SmsNotification> SmsNotifications { get; set; }
 
         public virtual ICollection<UserDeviceInfo> UserDevices { get; set; }
@@ -84,6 +81,56 @@ namespace Locato.Data.Entities.UserEntities
             Phone = new Phone();
             Location = new Location();
             RoleId = (int) Roles.User;
+        }
+
+        public User(string email, Phone phone, int roleId, string password, bool phoneVerified, Location location, long organizationId, DateTime? clearToken, string designation)
+        {
+            Email = email;
+            Phone = phone;
+            RoleId = roleId;
+            Password = password;
+            PhoneVerified = phoneVerified;
+            Location = location;
+            OrganizationId = organizationId;
+            ClearToken = clearToken;
+            Designation = designation;
+        }
+
+        public void ClearPassword()
+        {
+            Password = "";
+        }
+
+        public void UpdatePassword(string UnHashedPassword)
+        {
+            if (string.IsNullOrEmpty(UnHashedPassword))
+            {
+                Password = passwordHasher.HashPassword(user: this, UnHashedPassword);
+            }
+        }
+
+        public void UpdateEmail (string Email)
+        {
+            this.Email = Email;
+        }
+
+        public void UpdatePhone (Phone phone)
+        {
+            this.Phone = phone;
+        }
+        private PasswordHasher<User> _passwordHasher;
+        private PasswordHasher<User> passwordHasher
+        {
+            get
+            {
+                return _passwordHasher ??= new PasswordHasher<User>();
+            }
+        }
+
+        public bool MatchPassword(string unhashedPassword)
+        {
+            var result = passwordHasher.VerifyHashedPassword(this, Password, unhashedPassword);
+            return result == PasswordVerificationResult.Success || result == PasswordVerificationResult.SuccessRehashNeeded;
         }
     }
     public class UserEqualityComparer : IEqualityComparer<User>

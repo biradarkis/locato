@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Locato.Data.Web;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace Locato.Data.Contracts
 {
     public interface IUser
     {
-
+        string Password { get;  }   
+        string Email { get; }
+        Phone Phone { get; }
     }
 }
