@@ -25,6 +25,7 @@ namespace Locato.Web.Application.Users.Commands
             }
             public async Task<LoginResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
             {
+                //todo inserto token 
                 User user;
                 if (request.IdType == "Phone")
                 {
