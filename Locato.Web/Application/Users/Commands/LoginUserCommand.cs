@@ -4,9 +4,12 @@ using Locato.Data.EntityFramework;
 using Locato.Web.Application.Users.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Locato.Web.Application.Users.Validators;
 
 namespace Locato.Web.Application.Users.Commands
-{
+{       /// <summary>
+        ///  See Validation <see cref="LoginUserCommandValidator"/>
+        /// </summary>
     public class LoginUserCommand:IRequest<LoginResponse>
     {
         public required string UserId { get; set; }
@@ -38,14 +41,11 @@ namespace Locato.Web.Application.Users.Commands
 
                 if (user != null && user.MatchPassword(request.Password))
                 {
-                    
-                    
                         var token = _jwtHandler.GenerateJwtToken(user);
                         var refreshtocken = _jwtHandler.GenerateJwtRefreshToken(user);
                         return new LoginResponse(user, token, refreshtocken);
-                    
-                    
-                } else
+                } 
+                else
                 {
                   return new LoginResponse("Invalid Username or Password");
                 }

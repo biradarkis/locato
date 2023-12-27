@@ -36,16 +36,14 @@ namespace Locato.Web
             services.AddSingleton(appSettings);
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
-            services.TryAddSingleton<IHttpContextAccessor , HttpContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor , HttpContextAccessor>();
             services.AddSingleton(Args);
-            services.AddSingleton<IJwtHandler, JwtHandler>();
-            services.AddSwaggerGen(c => { //<-- NOTE 'Add' instead of 'Configure'
-                c.SwaggerDoc("v3", new OpenApiInfo
-                {
-                    Title = "GTrackAPI",
-                    Version = "v3"
-                });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "locato API", Version = "v1" });
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
+            services.AddSingleton<IJwtHandler, JwtHandler>();
             var connectionString = Configuration.GetConnectionString("Locato");
             services.AddDbContext<ApplicationContext>(options =>
             {
