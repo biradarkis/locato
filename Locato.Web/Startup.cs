@@ -1,11 +1,15 @@
 ﻿using Shared.helpers;
-using Microsoft.Extensions.DependencyInjection;
 using Locato.Data.EntityFramework;
 using Microsoft.EntityFrameworkCore;
-using Shared.Interfaces;
-using Services;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-
+using Services.Interfaces;
+using Services.Implementations;
+using Microsoft.OpenApi.Models;
+using InfraStructure.Services.Interfaces;
+using Locato.Infrastructure.Services.Implementations;
+using System.Reflection;
+using FluentValidation;
+using MediatR;
 namespace Locato.Web
 {
     public class Startup
@@ -28,17 +32,29 @@ namespace Locato.Web
             appSettingsSection.Bind(appSettings);
             services.AddScoped<IIdGenerator<long>, IdGenerator>();
             services.AddSingleton(appSettings);
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddMediatR(typeof(Startup))            
             services.TryAddSingleton<IHttpContextAccessor , HttpContextAccessor>();
             services.AddSingleton(Args);
+            services.AddSingleton<IJwtHandler, JwtHandler>();
+            services.AddSwaggerGen(c => { //<-- NOTE 'Add' instead of 'Configure'
+                c.SwaggerDoc("v3", new OpenApiInfo
+                {
+                    Title = "GTrackAPI",
+                    Version = "v3"
+                });
+            });
             var connectionString = Configuration.GetConnectionString("Locato");
             services.AddDbContext<ApplicationContext>(options =>
             {
                 options.UseNpgsql(connectionString)
                 .UseSnakeCaseNamingConvention();
             });
-            services.AddScoped<ICurrentUserService, CurrentUserServices>();
-            
-            services.AddScoped<IApplicationContext>(pr => pr.GetService<ApplicationContext>()!);
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IApplicationDbContext>(pr => pr.GetService<ApplicationContext>()!);
+            services.AddAuthorization();
+            services.AddAuthentication();
+            services.AddControllers();
         }
 
         public void Configure(IApplicationBuilder app , IWebHostEnvironment env)
@@ -54,6 +70,7 @@ namespace Locato.Web
                 app.UseRouting();
                 app.UseAuthentication();
                 app.UseAuthorization();
+
                 app.UseCors("AllowCors");
                 app.UseEndpoints(endpoints =>
                 {

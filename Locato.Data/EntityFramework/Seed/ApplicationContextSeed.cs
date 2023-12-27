@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Locato.Data.EntityFramework.Seed
 {
-    public partial class ApplicationContextSeed : IApplicationContextSeed
+    public partial class ApplicationContextSeed : IApplicationDbContextSeed
     {
-        private readonly IApplicationContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly ISender _mediator ;
         public async Task Seed(CancellationToken cancellationToken)
         {

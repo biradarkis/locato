@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Locato.Data.EntityFramework.Seed
 {
-    public interface IApplicationContextSeed
+    public interface IApplicationDbContextSeed
     {
         Task Seed(CancellationToken cancellationToken);
     }

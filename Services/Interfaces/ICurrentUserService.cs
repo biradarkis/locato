@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shared.Interfaces
+namespace Services.Interfaces
 {
     public interface ICurrentUserService
     {

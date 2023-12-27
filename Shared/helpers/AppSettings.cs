@@ -9,6 +9,7 @@ namespace Shared.helpers
     public class AppSettings
     {
         public string Secret { get; set; }
+        public string  RefreshSecret { get; set; }
         public string FrontEndUrl { get; set; }
     }
 }

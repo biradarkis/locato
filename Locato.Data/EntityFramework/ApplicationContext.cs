@@ -19,11 +19,11 @@ using Locato.Data.Entities.Transport.VehicleEntites;
 using Locato.Data.Entities.Validation;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Locato.Data.Contracts;
-using Shared.Interfaces;
+using Services.Interfaces;
 
 namespace Locato.Data.EntityFramework
 {
-    public class ApplicationContext : DbContext , IApplicationContext
+    public class ApplicationContext : DbContext , IApplicationDbContext
     {
         #region Users
         public DbSet<User> Users { get; set; }
@@ -100,8 +100,7 @@ namespace Locato.Data.EntityFramework
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
-                                    base.OnModelCreating(modelBuilder);
-            
+            base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace Locato.Data.EntityFramework
 {
-    public interface IApplicationContext
+    public interface IApplicationDbContext
     {
         public DbSet<User> Users { get;  }
         public DbSet<BaseUser> BaseUsers { get;  }

@@ -60,7 +60,7 @@ namespace Locato.Web
             {
                 var services = scope.ServiceProvider;
 
-                var context = services.GetService<IApplicationContext>();
+                var context = services.GetService<IApplicationDbContext>();
 
                 await (context as DbContext).Database.EnsureDeletedAsync(cancellationToken);
             }
@@ -72,7 +72,7 @@ namespace Locato.Web
             {
                 var services = scope.ServiceProvider;
 
-                var context = services.GetService<IApplicationContext>();
+                var context = services.GetService<IApplicationDbContext>();
 
                 await (context as DbContext).Database.EnsureCreatedAsync(cancellationToken);
 

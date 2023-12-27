@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Shared.Interfaces;
+using Services.Interfaces;
 using System.Security.Claims;
 using System.Collections.Generic;
 
 
-namespace Services
+namespace Services.Implementations
 {
-    public class CurrentUserServices : ICurrentUserService
+    public class CurrentUserService : ICurrentUserService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public CurrentUserServices(IHttpContextAccessor httpContextAccessor)
+        public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
          _httpContextAccessor = httpContextAccessor;
         }
@@ -17,7 +17,6 @@ namespace Services
         
         public bool IsLoggedIn => _httpContextAccessor?.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
 
-        private long? _userId { get; set; }
         public long UserId => long.Parse(_httpContextAccessor.HttpContext?.User?.FindFirst("id")?.Value??"-1");
 
         public long OrganizationId => long.Parse(_httpContextAccessor.HttpContext?.User?.FindFirst("orgid")?.Value ?? "-1");
