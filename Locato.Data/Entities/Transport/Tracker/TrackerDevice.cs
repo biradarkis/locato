@@ -13,7 +13,7 @@ namespace Locato.Data.Entities.Transport.Tracker
 {
     public class TrackerDevice : Entity, IValidatableObject
     {
-         //IMEI
+        //IMEI
         public string Identity { get; set; }
 
         public string Name { get; set; }
@@ -22,12 +22,12 @@ namespace Locato.Data.Entities.Transport.Tracker
         /// <summary>
         /// TODo : ask viren about this 
         /// </summary>
-        public virtual Organization Organization { get; set; }  
+        public virtual Organization Organization { get; set; }
         public long OrgId { get; set; }
         public virtual ICollection<TrackerDeviceLocation> LocationsLog { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            return Array.Empty<ValidationResult>(); 
+            return Array.Empty<ValidationResult>();
         }
 
     }
@@ -35,8 +35,8 @@ namespace Locato.Data.Entities.Transport.Tracker
     {
         public void Configure(EntityTypeBuilder<TrackerDevice> builder)
         {
-            builder.HasOne(x => x.Organization).WithMany(x => x.TrackerDevices).HasForeignKey(x => x.OrgId).IsRequired();    
-            
+            builder.HasOne(x => x.Organization).WithMany(x => x.TrackerDevices).HasForeignKey(x => x.OrgId).IsRequired();
+
         }
     }
 }

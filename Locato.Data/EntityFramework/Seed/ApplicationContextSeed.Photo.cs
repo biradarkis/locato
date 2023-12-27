@@ -8,7 +8,7 @@ namespace Locato.Data.EntityFramework.Seed
 {
     public partial class ApplicationContextSeed
     {
-        public async Task SeedPhotos(CancellationToken cancellationToken)
+        public async Task SeedPhoto(CancellationToken cancellationToken)
         {
             var photos = new List<Photo>
             {
@@ -17,18 +17,18 @@ namespace Locato.Data.EntityFramework.Seed
                     ProfileId = 1,
                     Key = "photo_key_1",
                     MimeType = "image/jpeg",
-                    RawBytes = new byte[] { /* Your image bytes here */ },
+                    RawBytes = new byte[] { },
                     ThumbnailLargeKey = "thumbnail_large_key_1",
-                    ThumbnailLarge = new byte[] { /* Your thumbnail bytes here */ }
+                    ThumbnailLarge = new byte[] { }
                 },
                 new Photo
                 {
                     ProfileId = 2,
                     Key = "photo_key_2",
                     MimeType = "image/png",
-                    RawBytes = new byte[] { /* Your image bytes here */ },
+                    RawBytes = new byte[] { 26 },
                     ThumbnailLargeKey = "thumbnail_large_key_2",
-                    ThumbnailLarge = new byte[] { /* Your thumbnail bytes here */ }
+                    ThumbnailLarge = new byte[] {12 }
                 }
             };
 

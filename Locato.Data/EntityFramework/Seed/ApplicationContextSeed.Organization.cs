@@ -24,7 +24,7 @@ namespace Locato.Data.EntityFramework.Seed
                     Country = "India",
                     Latitude = 18.33333,
                     Longitude = 78.23,
-                    State ="Maharastra",
+                    State = "Maharastra",
                     Street = "Roseland commercial complex",
                     Zip = "411057"
                 },
@@ -32,14 +32,14 @@ namespace Locato.Data.EntityFramework.Seed
                 API_URL = "api.schooldiary.me",
                 IsActive = true,
                 PANNumber = "GMMPEH1234A",
-                Website ="Web.zoment.com",
+                Website = "Web.zoment.com",
                 ShortName = "Ufony",
-                Phone =  new Web.Phone
+                Phone = new Web.Phone
                 {
                     CountryCode = 91,
                     E164Format = 91123456789,
                     NationalNumber = 123456789,
-                    RawInput ="+91123456789"
+                    RawInput = "+91123456789"
                 },
 
             });
