@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using InfraStructure.Services.Interfaces;
 using Locato.Infrastructure.Services.Implementations;
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,8 +54,11 @@ namespace Locato.Web
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IApplicationDbContext>(pr => pr.GetService<ApplicationContext>()!);
             services.AddAuthorization();
-            services.AddAuthentication();
-            services.AddControllers();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+
+            });
+            
         }
 
         public void Configure(IApplicationBuilder app , IWebHostEnvironment env)
