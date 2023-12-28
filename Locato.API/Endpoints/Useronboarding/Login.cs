@@ -1,11 +1,11 @@
 ﻿using Ardalis.ApiEndpoints;
-using Locato.Web.Application.Users.Commands;
-using Locato.Web.Application.Users.Models;
+using Locato.API.Application.Users.Commands;
+using Locato.API.Application.Users.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Locato.Web.Endpoints.Useronboarding
+namespace Locato.API.Endpoints.Useronboarding
 {
     [Route("/login")]
     [AllowAnonymous]

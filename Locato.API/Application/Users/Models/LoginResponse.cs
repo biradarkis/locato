@@ -1,7 +1,7 @@
 ﻿using Locato.Data.Entities.UserEntities;
 using Locato.Data.Web;
 
-namespace Locato.Web.Application.Users.Models
+namespace Locato.API.Application.Users.Models
 {
     public class LoginResponse
     {

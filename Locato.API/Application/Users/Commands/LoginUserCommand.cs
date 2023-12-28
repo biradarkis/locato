@@ -2,14 +2,14 @@
 using Locato.Data.Entities.UserEntities;
 using Locato.Data.Entities.Validation;
 using Locato.Data.EntityFramework;
-using Locato.Web.Application.Users.Models;
+using Locato.API.Application.Users.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Locato.Web.Application.Users.Validators;
+using Locato.API.Application.Users.Validators;
 using Locato.Data.Contracts;
 using Newtonsoft.Json.Linq;
 
-namespace Locato.Web.Application.Users.Commands
+namespace Locato.API.Application.Users.Commands
 {       /// <summary>
         ///  See Validation <see cref="LoginUserCommandValidator"/>
         /// </summary>

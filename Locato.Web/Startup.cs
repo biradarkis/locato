@@ -17,7 +17,7 @@ using System.Text;
 using Locato.Data.EntityFramework.Seed;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace Locato.API
+namespace Locato.Web
 {
     public class Startup
     {
@@ -49,7 +49,7 @@ namespace Locato.API
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton(Args);
-            
+
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
@@ -58,7 +58,7 @@ namespace Locato.API
                 });
 
             });
-           
+
             services.AddSingleton<IJwtHandler, JwtHandler>();
             var connectionString = Configuration.GetConnectionString("Locato");
             services.AddDbContext<ApplicationDbContext>(options => {
@@ -77,7 +77,7 @@ namespace Locato.API
                 {
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    ValidateIssuerSigningKey = true,
+                    ValidateIssuerSigningKey = t    rue,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
 
                 };
@@ -96,7 +96,7 @@ namespace Locato.API
                     }
                 };
             });
-           
+
             services.AddAuthorization();
         }
 

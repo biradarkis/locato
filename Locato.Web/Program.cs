@@ -1,14 +1,15 @@
 
-using Locato.Data.EntityFramework;
 using Locato.Data.EntityFramework.Seed;
+using Locato.Data.EntityFramework;
+using Locato.Web;
 using Microsoft.EntityFrameworkCore;
 using Shared.helpers;
 
-namespace Locato.API
+namespace Locato.Web
 {
     public class Program
     {
-        public async static Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -52,7 +53,7 @@ namespace Locato.API
             {
                 await SeedDatabase(app, cancellationToken);
             }
-         await app.RunAsync(cancellationToken);
+            await app.RunAsync(cancellationToken);
         }
 
         private static async Task DeleteDatabase(IHost app, CancellationToken cancellationToken)
@@ -82,13 +83,12 @@ namespace Locato.API
         }
         private async static Task SeedDatabase(IHost app, CancellationToken cancellationToken)
         {
-            using(var scope = app.Services.CreateScope())
+            using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 var seeder = services.GetService<IApplicationDbContextSeed>()!;
                 await seeder.Seed(cancellationToken);
             }
         }
-
     }
 }

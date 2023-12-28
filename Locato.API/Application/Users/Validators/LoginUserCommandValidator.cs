@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using Locato.Web.Application.Users.Commands;
+using Locato.API.Application.Users.Commands;
 
-namespace Locato.Web.Application.Users.Validators
+namespace Locato.API.Application.Users.Validators
 {
     public class LoginUserCommandValidator  : AbstractValidator<LoginUserCommand>
     {
