@@ -42,7 +42,7 @@ namespace Locato.Data.Entities.UserEntities
         /// <summary>
         /// remote storageURL of the media
         /// </summary>
-        public string StorageURL { get; set; }
+        public string StorageURL { get; set; } = "";
 
     }
 

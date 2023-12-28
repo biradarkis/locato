@@ -23,7 +23,7 @@ using Services.Interfaces;
 
 namespace Locato.Data.EntityFramework
 {
-    public class ApplicationContext : DbContext , IApplicationDbContext
+    public class ApplicationDbContext : DbContext , IApplicationDbContext
     {
         #region Users
         public DbSet<User> Users { get; set; }
@@ -85,12 +85,13 @@ namespace Locato.Data.EntityFramework
         #region Validation
         public DbSet<LoginUser> LoginUsers { get; set; }
         public DbSet<UserOTP> UserOTPs { get; set; }
+        public DbSet<JWTToken> JWTTokens { get; set; }
         public DbSet<UserTemporaryPassword> UserTemporaryPasswords { get; set; }
         #endregion
         private readonly IIdGenerator<long> _idGenerator;
         private readonly ICurrentUserService _userService;
 
-        public ApplicationContext(IIdGenerator<long> idGenerator , ICurrentUserService userService) : base() 
+        public ApplicationDbContext(IIdGenerator<long> idGenerator , ICurrentUserService userService, DbContextOptions options) : base(options) 
         {
           _idGenerator = idGenerator;
           _userService = userService;
@@ -100,14 +101,11 @@ namespace Locato.Data.EntityFramework
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+
             base.OnModelCreating(modelBuilder);
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=ufony-local2;Username=postgres;Password=2455").UseSnakeCaseNamingConvention();
-            base.OnConfiguring(optionsBuilder);
-        }
+        
 
         public override int SaveChanges()
         {
@@ -164,6 +162,7 @@ namespace Locato.Data.EntityFramework
             {
                 foreach(var dbEntityEntry  in ChangeTracker.Entries<TrackedEntity>())
                 {
+                    
                     if (dbEntityEntry.State == EntityState.Added)
                     {
                         dbEntityEntry.Entity.Created = now;

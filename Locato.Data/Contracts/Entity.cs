@@ -11,7 +11,7 @@ namespace Locato.Data.Contracts
     public class Entity : IEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
@@ -27,8 +27,5 @@ namespace Locato.Data.Contracts
             Updated = DateTime.UtcNow;
         }
     }
-
-
-
      
 }

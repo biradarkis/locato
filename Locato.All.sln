@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "..\Services\Ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "..\Shared\Shared.csproj", "{D3B9B3C6-1C30-435F-9086-CB7E5339B76E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locato.Web", "..\Locato.Web\Locato.Web.csproj", "{BD6D46A2-CC77-4CC7-BF83-3DB0B95869EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locato.API", "..\Locato.API\Locato.API.csproj", "{BD6D46A2-CC77-4CC7-BF83-3DB0B95869EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

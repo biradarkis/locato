@@ -8,7 +8,7 @@ using Locato.Data.Entities.Business;
 
 namespace Locato.Data.EntityFramework.Seed
 {
-    public partial class ApplicationContextSeed
+    public partial class ApplicationDbContextSeed
     {
         private async Task SeedOrganization(CancellationToken cancellationToken)
         {
@@ -41,7 +41,8 @@ namespace Locato.Data.EntityFramework.Seed
                     NationalNumber = 123456789,
                     RawInput ="+91123456789"
                 },
-
+                GSTNumber ="1234",
+                
             });
 
             await _context.SaveChangesAsync(cancellationToken);

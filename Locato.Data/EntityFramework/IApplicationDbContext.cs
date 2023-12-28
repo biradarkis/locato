@@ -43,6 +43,7 @@ namespace Locato.Data.EntityFramework
         public DbSet<TrackerDeviceAlarm> TrackerDeviceAlarms { get;  }
         public DbSet<TrackerDeviceLocation> TrackerDeviceLocations { get;  }
         public DbSet<Trip> Trips { get;  }
+        public DbSet<JWTToken> JWTTokens { get; }
         public DbSet<TripActiveGeoFence> TripActiveGeoFences { get;  }
         public DbSet<TripLocation> TripLocations { get;  }
         public DbSet<TripNotification> TripNotifications { get;  }

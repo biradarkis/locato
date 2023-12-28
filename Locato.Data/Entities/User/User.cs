@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
+using System.Xml.Linq;
 
 namespace Locato.Data.Entities.UserEntities
 {
@@ -33,7 +35,7 @@ namespace Locato.Data.Entities.UserEntities
         public long ProfileId { get; set; }
         public virtual Profile Profile { get; set; }
 
-        public required string Password { get; set; }
+        public string Password { get; set; }
 
         public bool EmailVerified { get; set; } = false;
         public bool PhoneVerified { get; set; } = false;
@@ -83,12 +85,17 @@ namespace Locato.Data.Entities.UserEntities
             RoleId = (int) Roles.User;
         }
 
+    
+
         public User(string email, Phone phone, int roleId, string password, bool phoneVerified, Location location, long organizationId, DateTime? clearToken, string designation)
         {
             Email = email;
             Phone = phone;
             RoleId = roleId;
-            Password = password;
+            if (!string.IsNullOrEmpty(password))
+            {
+                Password = _passwordHasher.HashPassword(this, password);
+            }
             PhoneVerified = phoneVerified;
             Location = location;
             OrganizationId = organizationId;
@@ -108,7 +115,11 @@ namespace Locato.Data.Entities.UserEntities
                 Password = passwordHasher.HashPassword(user: this, UnHashedPassword);
             }
         }
-
+        public User(string email,  string unhashedPassword)
+        {
+            Email = email;
+            Password = passwordHasher.HashPassword(this, unhashedPassword);
+        }
         public void UpdateEmail (string Email)
         {
             this.Email = Email;

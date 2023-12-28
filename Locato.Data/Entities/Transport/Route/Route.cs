@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Locato.Data.Entities.Transport.Routes
 {
-    public class Route : TrackedEntity, IValidatableObject
+    public class Route : Entity, IValidatableObject
     {
         public string Name { get; set; }
 
@@ -78,6 +78,7 @@ namespace Locato.Data.Entities.Transport.Routes
     {
         public void Configure(EntityTypeBuilder<Route> builder)
         {
+            builder.Property(x => x.VehicleId).IsRequired(false);
             builder.HasOne(x=>x.Organization).WithMany(x=>x.Routes).HasForeignKey(x=>x.OrganizationId).OnDelete(DeleteBehavior.Restrict).IsRequired();
             builder.HasMany(x => x.Trips).WithOne(x => x.Route).HasForeignKey(x => x.RouteId).OnDelete(DeleteBehavior.Restrict).IsRequired();
             builder.HasMany(x => x.Stops).WithOne(x => x.Route).HasForeignKey(x => x.RouteId).OnDelete(DeleteBehavior.Restrict);
