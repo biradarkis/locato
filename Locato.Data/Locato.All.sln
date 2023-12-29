@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "..\Shared\Shared.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Locato.API", "..\Locato.API\Locato.API.csproj", "{16EAC47D-D51F-43E6-9151-5A8534EEB9FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Locato.Web", "..\Locato.Web\Locato.Web.csproj", "{DD721873-C8A7-4466-B377-1B43D4846080}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{16EAC47D-D51F-43E6-9151-5A8534EEB9FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16EAC47D-D51F-43E6-9151-5A8534EEB9FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16EAC47D-D51F-43E6-9151-5A8534EEB9FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD721873-C8A7-4466-B377-1B43D4846080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD721873-C8A7-4466-B377-1B43D4846080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD721873-C8A7-4466-B377-1B43D4846080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD721873-C8A7-4466-B377-1B43D4846080}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
