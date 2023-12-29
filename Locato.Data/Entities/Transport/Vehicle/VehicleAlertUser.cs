@@ -1,5 +1,5 @@
 ﻿using Locato.Data.Contracts;
-using Locato.Data.Entities.Transport.VehicleEntites;
+using Locato.Data.Entities.Transport.VehicleEntities;
 using Locato.Data.Entities.UserEntities;
 using System;
 using System.Collections.Generic;

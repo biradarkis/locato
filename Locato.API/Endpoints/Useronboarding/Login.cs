@@ -11,7 +11,7 @@ namespace Locato.API.Endpoints.Useronboarding
     [AllowAnonymous]
     public class Login : EndpointBaseAsync.
          WithRequest<LoginUserCommand>
-        .WithResult<ActionResult<LoginResponse>>
+        .WithActionResult<LoginResponse>
     {
         private readonly ISender _mediator;
         public Login(ISender mediator)

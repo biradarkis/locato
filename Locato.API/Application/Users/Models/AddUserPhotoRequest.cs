@@ -12,7 +12,7 @@
         /// <summary>
         /// Image binary
         /// </summary>
-        public byte[] RawBytes { get; set; }
+        public string RawBytes { get; set; }
 
 
         public string ThumbnailLargeKey { get; set; }
@@ -20,7 +20,7 @@
         /// <summary>
         /// Image binary
         /// </summary>
-        public byte[] ThumbnailLarge { get; set; }
+        public string ThumbnailLarge { get; set; }
 
     }
 }

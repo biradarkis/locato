@@ -46,6 +46,9 @@ namespace Locato.Data.Entities.Business
         public string PANNumber { get; set; }
         public string? TANNumber { get; set; }
         public string GSTNumber { get; set; }
+        /// <summary>
+        /// <see cref="OrganizatinType"/>
+        /// </summary>
         public string Type { get;set; }
         public long? VendorId { get; set; }
         public Organization Vendor { get; set; }

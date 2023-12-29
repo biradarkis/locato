@@ -39,6 +39,14 @@ namespace Locato.API.Application.Users.Models
             Email = user.Email;
             Token = token;
             RefreshToken = refreshToken;
+            Role = ((UserRole)user.RoleId).ToString();
         }
+    }
+
+    public enum RegisterResult
+    {
+        SUCCESS,
+        EMAIL_EXISTS,
+        PHONE_EXISTS
     }
 }

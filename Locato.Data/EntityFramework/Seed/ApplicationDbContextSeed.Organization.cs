@@ -42,6 +42,7 @@ namespace Locato.Data.EntityFramework.Seed
                     RawInput ="+91123456789"
                 },
                 GSTNumber ="1234",
+                Type = OrganizatinType.INDEPENDENT_ORGANIZATION.ToString(),
                 
             });
 

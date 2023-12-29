@@ -1,7 +1,7 @@
 ﻿using Locato.Data.Contracts;
 using Locato.Data.Entities.Business;
 using Locato.Data.Entities.Transport.Routes;
-using Locato.Data.Entities.Transport.VehicleEntites;
+using Locato.Data.Entities.Transport.VehicleEntities;
 using Locato.Data.Entities.UserEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

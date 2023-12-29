@@ -94,6 +94,7 @@ namespace Locato.Data.EntityFramework
 
         #region Audit
         public DbSet<DeletedEntity> DeletedEntities { get; set; }
+        #endregion
         private readonly IIdGenerator<long> _idGenerator;
         private readonly ICurrentUserService _userService;
         private readonly ILogger<ApplicationDbContext> _logger;

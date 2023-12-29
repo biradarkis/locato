@@ -97,7 +97,7 @@ namespace Locato.Data.Entities.UserEntities
             RoleId = roleId;
             if (!string.IsNullOrEmpty(password))
             {
-                Password = _passwordHasher.HashPassword(this, password);
+                Password = passwordHasher.HashPassword(this, password);
             }
             PhoneVerified = phoneVerified;
             Location = location;
@@ -171,6 +171,7 @@ namespace Locato.Data.Entities.UserEntities
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.Property(x => x.RouteId).IsRequired(false);
             builder.HasMany(x=>x.Events).WithOne(x=>x.User).HasForeignKey(x=>x.UserId).IsRequired();
             builder.HasOne(x => x.Route).WithMany().HasForeignKey(x => x.RouteId).IsRequired();
             builder.OwnsOne(x => x.Phone);
