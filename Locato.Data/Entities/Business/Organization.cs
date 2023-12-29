@@ -21,10 +21,6 @@ namespace Locato.Data.Entities.Business
 {
     public class Organization : Entity, IValidatableObject
     {
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            return Array.Empty<ValidationResult>();
-        }
         [MaxLength(255)]
         public string Name { get; set; }
         public string? ShortName { get; set; }
@@ -50,8 +46,9 @@ namespace Locato.Data.Entities.Business
         public string PANNumber { get; set; }
         public string? TANNumber { get; set; }
         public string GSTNumber { get; set; }
-
-
+        public string Type { get;set; }
+        public long? VendorId { get; set; }
+        public Organization Vendor { get; set; }
         public Organization()
         {
             IsActive = true;
@@ -61,6 +58,17 @@ namespace Locato.Data.Entities.Business
             Events = new HashSet<Event>();   
         }
 
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+                if (Type == OrganizatinType.ORGANIZATION.ToString() && VendorId == null)
+                {
+                return new[]
+                {
+                    new ValidationResult("Cannnot insert an organization without vendorId if the organization type is a Vendor Dependent Organization",new []{"VendorId"})
+                };
+                };
+             return Array.Empty<ValidationResult>();
+        }
     }
 
     internal class OrganizationConfiguration : IEntityTypeConfiguration<Organization>
@@ -73,8 +81,15 @@ namespace Locato.Data.Entities.Business
             builder.OwnsOne(x => x.Phone);
             builder.OwnsOne(x => x.Address);
             builder.OwnsOne(x => x.AlternatePhone);
-            
+            builder.HasOne(x => x.Vendor).WithMany().HasForeignKey(x => x.VendorId).IsRequired(false);
         }
+    }
+
+    public enum OrganizatinType
+    {
+        VENDOR ,
+        INDEPENDENT_ORGANIZATION,
+        ORGANIZATION
     }
 }
     

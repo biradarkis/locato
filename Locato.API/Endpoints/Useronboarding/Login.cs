@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Locato.API.Endpoints.Useronboarding
 {
-    [Route("/login")]
+    [Route("/auth")]
     [AllowAnonymous]
     public class Login : EndpointBaseAsync.
          WithRequest<LoginUserCommand>
@@ -18,7 +18,7 @@ namespace Locato.API.Endpoints.Useronboarding
         {
             _mediator = mediator;   
         }
-        [HttpPost()]
+        [HttpPost("/login")]
         public override async Task<ActionResult<LoginResponse>> HandleAsync(LoginUserCommand request, CancellationToken cancellationToken = default)
         {
             var response = await _mediator.Send(request, cancellationToken);

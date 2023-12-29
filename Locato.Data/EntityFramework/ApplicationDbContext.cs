@@ -15,21 +15,23 @@ using Locato.Data.Entities.Transport.Routes;
 using Locato.Data.Entities.Transport.Tracker;
 using Locato.Data.Entities.Transport.Trips;
 using Locato.Data.Entities.Transport.VehicleEntities;
-using Locato.Data.Entities.Transport.VehicleEntites;
 using Locato.Data.Entities.Validation;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Locato.Data.Contracts;
 using Services.Interfaces;
+using Microsoft.Extensions.Logging;
+using Locato.Data.Entities.Audit;
+using Newtonsoft.Json;
 
 namespace Locato.Data.EntityFramework
 {
-    public class ApplicationDbContext : DbContext , IApplicationDbContext
+    public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         #region Users
         public DbSet<User> Users { get; set; }
-        
+
         public DbSet<Profile> Profiles { get; set; }
-        public DbSet<Photo> Photos{ get; set; }
+        public DbSet<Photo> Photos { get; set; }
         public DbSet<UserDeviceInfo> UserDeviceInfoes { get; set; }
         #endregion 
         #region Communication 
@@ -44,10 +46,10 @@ namespace Locato.Data.EntityFramework
         #endregion
         #region Media
         public DbSet<Attachment> Attachments { get; set; }
-        public DbSet<StaticMedia> StaticMedias{ get; set; }
+        public DbSet<StaticMedia> StaticMedias { get; set; }
         #endregion
         #region Scheduling 
-        public DbSet<Event> Events{ get; set; }
+        public DbSet<Event> Events { get; set; }
         public DbSet<OrganizationOffDay> OrganizationOffDays { get; set; }
         #endregion
 
@@ -75,9 +77,10 @@ namespace Locato.Data.EntityFramework
         #endregion
 
         #region Vehicles
-        public DbSet<Vehicle> Vehicles{ get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<VehicleAlert> VehicleAlerts { get; set; }
         public DbSet<VehicleAlertUser> VehicleAlertUsers { get; set; }
+        public DbSet<VehicleAvailabilityLog> VehicleAvailabilityLogs { get; set; }
         public DbSet<VehicleMedia> VehicleMedias { get; set; }
         public DbSet<VehicleTrackerDeviceLog> VehicleTrackerDeviceLogs { get; set; }
         #endregion
@@ -88,13 +91,17 @@ namespace Locato.Data.EntityFramework
         public DbSet<JWTToken> JWTTokens { get; set; }
         public DbSet<UserTemporaryPassword> UserTemporaryPasswords { get; set; }
         #endregion
+
+        #region Audit
+        public DbSet<DeletedEntity> DeletedEntities { get; set; }
         private readonly IIdGenerator<long> _idGenerator;
         private readonly ICurrentUserService _userService;
-
-        public ApplicationDbContext(IIdGenerator<long> idGenerator , ICurrentUserService userService, DbContextOptions options) : base(options) 
+        private readonly ILogger<ApplicationDbContext> _logger;
+        public ApplicationDbContext(IIdGenerator<long> idGenerator, ICurrentUserService userService, ILogger<ApplicationDbContext> logger, DbContextOptions options) : base(options)
         {
-          _idGenerator = idGenerator;
-          _userService = userService;
+            _idGenerator = idGenerator;
+            _userService = userService;
+            _logger = logger;
         }
 
 
@@ -105,7 +112,7 @@ namespace Locato.Data.EntityFramework
             base.OnModelCreating(modelBuilder);
         }
 
-        
+
 
         public override int SaveChanges()
         {
@@ -116,28 +123,33 @@ namespace Locato.Data.EntityFramework
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                throw new DbUpdateConcurrencyException("concurency error occured while updating the database" + GetExceptions(ex)+ex.Message);
-                
+                var exceptions = GetExceptions(ex) + ex.Message;
+                _logger.LogError(exceptions);
+                throw new DbUpdateConcurrencyException("concurency error occured while updating the database \n" + exceptions);
+
             }
             catch (DbUpdateException ex)
             {
-                throw new DbUpdateConcurrencyException("concurency error occured while updating the database" + GetExceptions(null,ex) + ex.Message);
+                var exceptions = GetExceptions(null, ex) + ex.Message;
+                _logger.LogError(exceptions);
+                throw new DbUpdateConcurrencyException("concurency error occured while updating the database\n" + exceptions);
             }
-          
+
         }
 
 
-        private string GetExceptions(DbUpdateConcurrencyException? dbupdateconcurrency = null, DbUpdateException? dbupdateexception = null )
+        private string GetExceptions(DbUpdateConcurrencyException? dbupdateconcurrency = null, DbUpdateException? dbupdateexception = null)
         {
             var sb = new StringBuilder();
-            if(dbupdateconcurrency!= null)
+            if (dbupdateconcurrency != null)
             {
-                foreach(var item in dbupdateconcurrency.Entries)
+                foreach (var item in dbupdateconcurrency.Entries)
                 {
-                    sb.AppendLine("Error occured in entity "+item.Entity.GetType().Name);
+                    sb.AppendLine("Error occured in entity " + item.Entity.GetType().Name);
                     sb.AppendLine();
                 }
-            } else  if(dbupdateexception != null)
+            }
+            else if (dbupdateexception != null)
             {
                 foreach (var item in dbupdateexception.Entries)
                 {
@@ -147,62 +159,71 @@ namespace Locato.Data.EntityFramework
             }
 
 
-            return sb.ToString();   
+            return sb.ToString();
         }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             OnSaveChanges();
             return base.SaveChangesAsync(cancellationToken);
         }
-        
+
         private void OnSaveChanges()
         {
             var now = DateTime.UtcNow;
             try
             {
-                foreach(var dbEntityEntry  in ChangeTracker.Entries<TrackedEntity>())
+                foreach (var dbEntityEntry in ChangeTracker.Entries<TrackedEntity>())
                 {
-                    
                     if (dbEntityEntry.State == EntityState.Added)
                     {
-                        dbEntityEntry.Entity.Created = now;
-                        dbEntityEntry.Entity.Updated = now;
-
-                        if (dbEntityEntry.Entity.Id == 0)
-                            dbEntityEntry.Entity.Id = NextId();
                         dbEntityEntry.Entity.CreatedBy = this._userService.UserId;
                         dbEntityEntry.Entity.ModifiedBy = this._userService.UserId;
-                    } 
-                    if(dbEntityEntry.State == EntityState.Modified)
+                    }
+                    else if (dbEntityEntry.State == EntityState.Modified)
                     {
-                        dbEntityEntry.Entity.Updated = now;
                         dbEntityEntry.Entity.ModifiedBy = _userService.UserId;
+                    } else if(dbEntityEntry.State == EntityState.Deleted)
+                    {
+                        this.DeletedEntities.Add(new DeletedEntity
+                        {
+                            Meta = JsonConvert.SerializeObject(dbEntityEntry.Entity, Formatting.Indented),
+                            Type = dbEntityEntry.Entity.GetType().Name,
+                            ModifiedBy = this._userService.UserId,
+                            CreatedBy = this._userService.UserId
+                        });
                     }
                 }
                 foreach (var dbEntityEntry in ChangeTracker.Entries<Entity>())
                 {
                     if (dbEntityEntry.State == EntityState.Added)
                     {
-                        dbEntityEntry.Entity.Created= now;
+                        dbEntityEntry.Entity.Created = now;
                         dbEntityEntry.Entity.Updated = now;
-
-                        if (dbEntityEntry.Entity.Id == 0)
-                            dbEntityEntry.Entity.Id = NextId();
                     }
-
-                    if (dbEntityEntry.State == EntityState.Modified)
+                    else if (dbEntityEntry.State == EntityState.Modified)
                     {
                         dbEntityEntry.Entity.Updated = now;
+                    }
+                    else if (dbEntityEntry.State == EntityState.Deleted)
+                    {
+                        this.DeletedEntities.Add(new DeletedEntity
+                        {
+                            Meta = JsonConvert.SerializeObject(dbEntityEntry.Entity, Formatting.Indented),
+                            Type = dbEntityEntry.Entity.GetType().Name,
+                            ModifiedBy = this._userService.UserId,
+                            CreatedBy = this._userService.UserId
+                        });
                     }
                 }
             }
             catch (Exception ex)
             {
                 var e = ex;
+                _logger.LogError(e,e.Message);
             }
         }
 
-     
+
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
             configurationBuilder.Properties<DateTimeOffset>()
@@ -216,7 +237,7 @@ namespace Locato.Data.EntityFramework
             return _idGenerator.GenerateId();
         }
 
-       
+
     }
 
     public class DateTimeOffsetConverter : ValueConverter<DateTimeOffset, DateTimeOffset>

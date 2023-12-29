@@ -26,6 +26,9 @@ namespace Locato.Data.Entities.UserEntities
         }
         [Phone]
         public Phone Phone { get; protected set; }
+        /// <summary>
+        /// <see cref="UserRole"/>
+        /// </summary>
         public int RoleId { get;set; }
 
         public Phone? AlternatePhone { get; set; }
@@ -157,6 +160,13 @@ namespace Locato.Data.Entities.UserEntities
         }
     }
 
+    public enum UserRole
+    {
+        Driver,
+        User,
+        Vendor,
+        Admin
+    }
     internal class UserConfiguration : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)

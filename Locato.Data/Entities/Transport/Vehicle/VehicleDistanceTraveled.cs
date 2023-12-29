@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Locato.Data.Entities.Transport.VehicleEntites
+namespace Locato.Data.Entities.Transport.VehicleEntities
 {
     public class VehicleDistanceTraveled : Entity, IValidatableObject
     {

@@ -1,11 +1,11 @@
-﻿using Locato.Data.Entities.Business;
+﻿using Locato.Data.Entities.Audit;
+using Locato.Data.Entities.Business;
 using Locato.Data.Entities.Communication;
 using Locato.Data.Entities.Media;
 using Locato.Data.Entities.Scheduling;
 using Locato.Data.Entities.Transport.Routes;
 using Locato.Data.Entities.Transport.Tracker;
 using Locato.Data.Entities.Transport.Trips;
-using Locato.Data.Entities.Transport.VehicleEntites;
 using Locato.Data.Entities.Transport.VehicleEntities;
 using Locato.Data.Entities.UserEntities;
 using Locato.Data.Entities.Validation;
@@ -49,6 +49,7 @@ namespace Locato.Data.EntityFramework
         public DbSet<TripNotification> TripNotifications { get;  }
         public DbSet<TripSubscriber> TripSubscribers { get;  }
         public DbSet<Vehicle> Vehicles { get;  }
+        public DbSet<VehicleAvailabilityLog> VehicleAvailabilityLogs { get; }
         public DbSet<VehicleAlert> VehicleAlerts { get;  }
         public DbSet<VehicleAlertUser> VehicleAlertUsers { get;  }
         public DbSet<VehicleMedia> VehicleMedias { get;  }
@@ -56,6 +57,7 @@ namespace Locato.Data.EntityFramework
         public DbSet<LoginUser> LoginUsers { get;  }
         public DbSet<UserOTP> UserOTPs { get;  }
         public DbSet<UserTemporaryPassword> UserTemporaryPasswords { get;  }
+        public DbSet<DeletedEntity> DeletedEntities { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         int SaveChanges();

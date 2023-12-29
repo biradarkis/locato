@@ -27,7 +27,7 @@ namespace Locato.Data.Entities.Transport.VehicleEntities
       
         public long? BusdriverId { get; set; }
         [ForeignKey(nameof(BusdriverId))]
-        public Driver BusDriver { get; set; }
+        public User BusDriver { get; set; }
 
         public bool OwnedByOrg { get; set; }
 
