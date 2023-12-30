@@ -18,7 +18,7 @@ namespace Locato.API.Endpoints.Useronboarding
         {
             _mediator = mediator;   
         }
-        [HttpPost("/login")]
+        [HttpPost("login")]
         public override async Task<ActionResult<LoginResponse>> HandleAsync(LoginUserCommand request, CancellationToken cancellationToken = default)
         {
             var response = await _mediator.Send(request, cancellationToken);

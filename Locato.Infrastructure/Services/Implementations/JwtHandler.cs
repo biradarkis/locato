@@ -23,11 +23,11 @@ namespace Locato.Infrastructure.Services.Implementations
         public string GenerateJwtRefreshToken(User user, int expiresInHours = 720)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(_appSettings.RefreshSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] {
-                    new Claim("id", user.Id.ToString(), ClaimValueTypes.Integer),
+                    new Claim("id", user.Id.ToString(), ClaimValueTypes.Integer64),
                     new Claim("date", DateTimeOffset.UtcNow.ToString(), ClaimValueTypes.DateTime),
                 }),
                 Expires = DateTime.UtcNow.AddHours(expiresInHours),
@@ -39,7 +39,7 @@ namespace Locato.Infrastructure.Services.Implementations
         public string GenerateJwtToken(User user, int expiresInHours = 12)
         {
             var handler = new JwtSecurityTokenHandler();
-            var secretKey = Encoding.ASCII.GetBytes(_appSettings.RefreshSecret);
+            var secretKey = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject =  new ClaimsIdentity(

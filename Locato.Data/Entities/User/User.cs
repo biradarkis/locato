@@ -52,6 +52,7 @@ namespace Locato.Data.Entities.UserEntities
         public virtual ICollection<Message> Messages { get; set; }
         public virtual Route Route { get; set; }
         public long? RouteId { get; set; }
+        public int LoginAttempts { get; set; }
         public virtual Organization Organization { get; set; }
         public virtual ICollection<Event> Events { get; set; }
         public long OrganizationId  { get; set; }
@@ -113,7 +114,7 @@ namespace Locato.Data.Entities.UserEntities
 
         public void UpdatePassword(string UnHashedPassword)
         {
-            if (string.IsNullOrEmpty(UnHashedPassword))
+            if (!string.IsNullOrEmpty(UnHashedPassword))
             {
                 Password = passwordHasher.HashPassword(user: this, UnHashedPassword);
             }

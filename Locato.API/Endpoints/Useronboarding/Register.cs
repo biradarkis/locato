@@ -3,11 +3,13 @@ using Locato.API.Application.Users.Commands;
 using Locato.API.Application.Users.Models;
 using Locato.Data.Entities.UserEntities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Locato.API.Endpoints.Useronboarding
 {
     [Route("/auth")]
+    [AllowAnonymous]
     public class Register : EndpointBaseAsync.WithRequest<RegisterUserCommand>.WithActionResult<LoginResponse>
     {
         private readonly ISender _mediator;
@@ -17,7 +19,7 @@ namespace Locato.API.Endpoints.Useronboarding
             _mediator = mediator;
         }
 
-        [HttpPost("/register")]
+        [HttpPost("register")]
         public async override Task<ActionResult<LoginResponse>> HandleAsync(RegisterUserCommand request, CancellationToken cancellationToken = default)
         {
             var response = await _mediator.Send(request);

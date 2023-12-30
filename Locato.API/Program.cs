@@ -57,37 +57,31 @@ namespace Locato.API
 
         private static async Task DeleteDatabase(IHost app, CancellationToken cancellationToken)
         {
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
 
-                var context = services.GetService<IApplicationDbContext>();
+            var context = services.GetService<IApplicationDbContext>();
 
-                await (context as DbContext).Database.EnsureDeletedAsync(cancellationToken);
-            }
+            await (context as DbContext).Database.EnsureDeletedAsync(cancellationToken);
         }
 
         private async static Task CreateDatabase(IHost app, CancellationToken cancellationToken)
         {
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
 
-                var context = services.GetService<IApplicationDbContext>();
+            var context = services.GetService<IApplicationDbContext>();
 
-                await (context as DbContext).Database.EnsureCreatedAsync(cancellationToken);
+            await (context as DbContext).Database.EnsureCreatedAsync(cancellationToken);
 
-                await context.SaveChangesAsync(cancellationToken);
-            }
+            await context.SaveChangesAsync(cancellationToken);
         }
         private async static Task SeedDatabase(IHost app, CancellationToken cancellationToken)
         {
-            using(var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var seeder = services.GetService<IApplicationDbContextSeed>()!;
-                await seeder.Seed(cancellationToken);
-            }
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            var seeder = services.GetService<IApplicationDbContextSeed>()!;
+            await seeder.Seed(cancellationToken);
         }
 
     }

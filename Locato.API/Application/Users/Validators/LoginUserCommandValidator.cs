@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Locato.API.Application.Users.Commands;
+using Shared.Constants;
 
 namespace Locato.API.Application.Users.Validators
 {
@@ -7,8 +8,8 @@ namespace Locato.API.Application.Users.Validators
     {
         public LoginUserCommandValidator() 
         {
-            RuleFor(x=>x.IdType).NotNull().NotEmpty();
-            When(x => x.IdType == "Phone", () =>
+            RuleFor(x=>x.LoginMethod).NotNull().NotEmpty();
+            When(x => x.LoginMethod == UserConstants.LOGIN_METHOD_PHONE, () =>
             {
                 RuleFor(x => x.UserId).NotNull().NotEmpty().WithMessage("UserId is required");
                 RuleFor(x => x.UserId).MaximumLength(16).WithMessage("Invalid Phone Number");

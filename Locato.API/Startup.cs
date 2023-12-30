@@ -16,6 +16,10 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Text;
 using Locato.Data.EntityFramework.Seed;
 using Swashbuckle.AspNetCore.Swagger;
+using FluentValidation.AspNetCore;
+using System.Security.Claims;
+using Locato.Infrastructure.Filters;
+using Locato.API.Endpoints.Useronboarding;
 
 namespace Locato.API
 {
@@ -49,12 +53,45 @@ namespace Locato.API
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton(Args);
+            services.AddControllers(options => 
+            { options.Filters.Add<APIExecptionFilterAttribute>();
+            });
             
+               
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "locato API",
                     Version = "v1"
+                });
+                c.OperationFilter<HeaderParameterFilter>();
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name="Authorization",
+                    In =ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme ="Bearer",
+                    BearerFormat ="JWT",
+                    Description ="JWT Token",
+
+
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type= ReferenceType.SecurityScheme,
+                                Id="Bearer",
+
+                            }
+                        }
+                        ,
+
+                    new  string[]{ }
+                    }
                 });
 
             });
@@ -71,19 +108,23 @@ namespace Locato.API
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IApplicationDbContext>(pr => pr.GetService<ApplicationDbContext>()!);
             services.AddCors();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options => {
                 var key = appSettings.Secret;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
-
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key))
                 };
                 options.Events = new JwtBearerEvents
                 {
                     OnAuthenticationFailed = exception => {
+                        Console.Write("logggin validation "+exception.Exception.Message+exception);
                         if (exception.Exception.GetType() == typeof(SecurityTokenExpiredException))
                         {
                             exception.Response.Headers.Add("Token-Expired", "true");
@@ -113,7 +154,6 @@ namespace Locato.API
                 app.UseRouting();
                 app.UseAuthentication();
                 app.UseAuthorization();
-
                 app.UseCors("AllowCors");
                 app.UseEndpoints(endpoints => {
                     endpoints.MapControllers();
