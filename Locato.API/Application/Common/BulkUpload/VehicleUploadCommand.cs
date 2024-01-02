@@ -7,6 +7,7 @@ using OfficeOpenXml;
 using System.Collections.Generic;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Constants;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Locato.API.Application.Common.BulkUpload
 {
@@ -16,11 +17,12 @@ namespace Locato.API.Application.Common.BulkUpload
         public class VehiclUploadCommandHandler : IRequestHandler<VehicleUploadCommand, DefaultAPIResponse>, IVehicleUpload
         {
             private readonly IApplicationDbContext _context;
-            private readonly ILogger<VehicleUploadCommand> _logger;
+            private readonly ILogger _logger;
 
             public VehiclUploadCommandHandler(IApplicationDbContext context)
             {
                 _context = context;
+                
             }   
 
             public async Task<DefaultAPIResponse> Handle(VehicleUploadCommand request, CancellationToken cancellationToken)
@@ -32,12 +34,13 @@ namespace Locato.API.Application.Common.BulkUpload
                 }
                 using var stream = new MemoryStream();
                 request.FormFile.CopyTo(stream);
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 using var package = new ExcelPackage(stream);
                 var worksheet = package.Workbook.Worksheets[0];
                 var rows = (worksheet.Dimension.End.Row - worksheet.Dimension.Start.Row);
                 var cols = (worksheet.Dimension.End.Column - worksheet.Dimension.Start.Column);
                 int col = 2;
-                for(int i = 0;i< rows; i++)
+                for(int i = 2;i< rows; i++)
                 {
                     var vehicle = new Vehicle
                     {
@@ -50,23 +53,26 @@ namespace Locato.API.Application.Common.BulkUpload
                         CCTV = bool.Parse(worksheet.Cells[i, col++].Value.ToString()),
                         FireExtinguisher  = bool.Parse(worksheet.Cells[i, col++].Value.ToString()),
                         FirstAidBox = bool.Parse(worksheet.Cells[i, col++].Value.ToString()),
-                        OrgId = long.Parse(worksheet.Cells[i, col++].Value.ToString()),
+                        OrgId = await GetOrgIdByName(worksheet.Cells[i, col++].Value.ToString()),
                         EngineNumber = worksheet.Cells[i, col++].Value.ToString(),
                         ModelNameAndNumber = worksheet.Cells[i, col++].Value.ToString(),
                         ChassisNumber = worksheet.Cells[i, col++].Value.ToString(),
                         FuelType = worksheet.Cells[i, col++].Value.ToString(),
                     };
+                    list.Add(vehicle);
+                    col = 2;
                 }
                 if (await UploadVehicles(list))
                 {
                     return new DefaultAPIResponse("" ,true,"successfully uploaded the vehicles");
                 } else
                 {
-                    return new DefaultAPIResponse("Something went wrong", true);
+                    return new DefaultAPIResponse("Something went wrong", false);
                 }
             }
 
-            private async Task<bool> UploadVehicles(IList<Vehicle> vehicles)
+
+            public async Task<bool> UploadVehicles(IList<Vehicle> vehicles)
             {
                 try
                 {
@@ -76,21 +82,29 @@ namespace Locato.API.Application.Common.BulkUpload
                 }
                 catch (Exception e)
                 {
-
-                    _logger.LogError(e, e.Message);
                     return false;
                 }
             }
 
 
-            private async Task<bool> ValidateFile(IFormFile file)
+            private async Task<long> GetOrgIdByName(string name)
+            {
+                name  = name.ToLower().Trim();
+                var id =_context.Organizations.FirstOrDefault(x=>x.Name.ToLower().Trim()==name)?.Id;
+                return id ?? 0;
+            }
+
+
+
+            public async Task<bool> ValidateFile(IFormFile file)
             {
                 using var stream = new MemoryStream();
                 file.CopyTo(stream);
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 using var package = new ExcelPackage(stream);
                 var worksheet = package.Workbook.Worksheets[0];
-                var rows = (worksheet.Dimension.End.Row - worksheet.Dimension.Start.Row);
-                var cols = (worksheet.Dimension.End.Column - worksheet.Dimension.Start.Column);
+                var rows = (worksheet.Dimension.End.Row - worksheet.Dimension.Start.Row)+1;
+                var cols = (worksheet.Dimension.End.Column - worksheet.Dimension.Start.Column)+1;
                 if (cols != UtilityConstants.VEHICLE_EXCEL_SHEET_FILED_COUNT)
                 {
                     return false;
@@ -98,7 +112,7 @@ namespace Locato.API.Application.Common.BulkUpload
 
                 for (int i = 2; i <rows; i++)
                 {
-                    for(int j = 1;j<cols ; j++)
+                    for(int j = 2;j<cols ; j++)
                     {
                         if (worksheet.Cells[i, j].Value == null || string.IsNullOrWhiteSpace(worksheet.Cells[i, j].Value.ToString()))
                         {

@@ -18,11 +18,11 @@ namespace Locato.API.Endpoints.Admin
         }
 
         [HttpPost("uploadvehicles")]
-        public override async Task<ActionResult<DefaultAPIResponse>> HandleAsync(UploadVehiclesRequest request, CancellationToken cancellationToken = default)
+        public override async Task<ActionResult<DefaultAPIResponse>> HandleAsync([FromForm] UploadVehiclesRequest request, CancellationToken cancellationToken = default)
         {
             var response = await _mediator.Send(new VehicleUploadCommand
             {
-
+                FormFile = request.File
             });
 
             return response;

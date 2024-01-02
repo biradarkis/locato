@@ -19,6 +19,6 @@ namespace Shared.Constants
 
     public static class UtilityConstants
     {
-        public static readonly int VEHICLE_EXCEL_SHEET_FILED_COUNT = 10;
+        public static readonly int VEHICLE_EXCEL_SHEET_FILED_COUNT = 14;
     }
 }

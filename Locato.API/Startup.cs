@@ -156,6 +156,7 @@ namespace Locato.API
                 app.UseAuthentication();
                 app.UseAuthorization();
                 app.UseCors("AllowCors");
+                app.UseStaticFiles();
                 app.UseEndpoints(endpoints => {
                     endpoints.MapControllers();
                 });

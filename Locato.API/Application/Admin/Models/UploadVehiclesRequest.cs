@@ -2,7 +2,7 @@
 {
     public class UploadVehiclesRequest
     {
-       IFormFile File { get; set; }
+      public IFormFile File { get; set; }
        
     }
 }

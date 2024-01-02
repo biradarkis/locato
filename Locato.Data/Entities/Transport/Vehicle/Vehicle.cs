@@ -120,6 +120,7 @@ namespace Locato.Data.Entities.Transport.VehicleEntities
         {
             builder.HasMany(x => x.Routes).WithOne(x => x.Vehicle).HasForeignKey(x => x.VehicleId);
             builder.HasOne(x=>x.Organization).WithMany(x => x.Vehicles).HasForeignKey(x => x.OrgId);
+            builder.Property(x => x.BusdriverId).IsRequired(false);
         }
     }
 
