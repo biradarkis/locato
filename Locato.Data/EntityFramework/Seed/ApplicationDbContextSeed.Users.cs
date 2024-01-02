@@ -21,6 +21,7 @@ namespace Locato.Data.EntityFramework.Seed
             var organizationIds = await _context.Organizations.Select(x => x.Id).ToArrayAsync(cancellationToken);
             var profileIds  = await _context.Profiles.Select(x=>x.Id).ToArrayAsync(cancellationToken);
             var routeIds = await _context.Routes.Select(x => x.Id).ToArrayAsync(cancellationToken);
+            var shiftIds = await _context.OrganizationShifts.Select(x => x.Id).ToArrayAsync(cancellationToken);
             for (int i = 0;i < profileIds.Length;i++)
             {
                 var user = new User(email: $"user{profileIds[i]}@example.com", unhashedPassword:"aaaaa");
@@ -51,6 +52,7 @@ namespace Locato.Data.EntityFramework.Seed
                 };
                 user.RouteId = routeIds[i%routeIds.Length];
                 user.OrganizationId = organizationIds[i % organizationIds.Length];
+                user.ShiftId = shiftIds[i%shiftIds.Length];
                 _context.Users.Add(user);
             }
 

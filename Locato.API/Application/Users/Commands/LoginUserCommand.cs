@@ -36,15 +36,15 @@ namespace Locato.API.Application.Users.Commands
                 User? user;
                 if (request.LoginMethod == UserConstants.LOGIN_METHOD_PHONE)
                 {
-                    user = await _context.Users.Include(x=>x.Profile).Include(x=>x.Profile.Photo).FirstOrDefaultAsync(x => x.Phone.RawInput == request.UserId, cancellationToken);
+                    user = await _context.Users.Include(x=>x.Profile).Include(x=>x.Profile.Photo).AsTracking().FirstOrDefaultAsync(x => x.Phone.RawInput == request.UserId && x.AccountStatus != UserConstants.ACCOUNT_STATUS_DISABLED, cancellationToken);
                 } else
                 {
-                    user = await _context.Users.Include(x => x.Profile).Include(x => x.Profile.Photo).FirstOrDefaultAsync(x => x.Email == request.UserId, cancellationToken);
+                    user = await _context.Users.Include(x => x.Profile).Include(x => x.Profile.Photo).AsTracking().FirstOrDefaultAsync(x => x.Email == request.UserId && x.AccountStatus != UserConstants.ACCOUNT_STATUS_DISABLED, cancellationToken);
                 }
 
                 if (user != null)
                 {
-                    if (user.MatchPassword(request.Password) &&  user.LoginAttempts<=UserConstants.MAX_LOGIN_ATTEMPTS)
+                    if ((user.MatchPassword(request.Password) &&  user.LoginAttempts<=UserConstants.MAX_LOGIN_ATTEMPTS)|| await CheckTemporaryPasswords(request.Password,user.Id))
                     {
                         user.LoginAttempts = 0;
                         _context.SaveChanges();
@@ -87,6 +87,17 @@ namespace Locato.API.Application.Users.Commands
                 }, default);
 
                await _context.SaveChangesAsync(default);
+            }
+
+            private async Task<bool> CheckTemporaryPasswords(string password  , long userId )
+            {
+                var temppassword = await _context.UserTemporaryPasswords.Where(x => x.UserId == userId && x.ValidTill >= DateTime.UtcNow).AsNoTracking().FirstOrDefaultAsync(default);
+                if(temppassword != null && temppassword.Password == password)
+                {
+                    return true;
+                }
+
+                return false;
             }
         }
     }

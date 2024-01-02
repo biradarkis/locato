@@ -49,8 +49,9 @@ namespace Locato.Data.EntityFramework
         public DbSet<StaticMedia> StaticMedias { get; set; }
         #endregion
         #region Scheduling 
-        public DbSet<Event> Events { get; set; }
+        public DbSet<Holiday> Holidays { get; set; }
         public DbSet<OrganizationOffDay> OrganizationOffDays { get; set; }
+        public DbSet<OrganizationShift> OrganizationShifts { get; set; }    
         #endregion
 
         #region Routes

@@ -39,7 +39,7 @@ namespace Locato.Data.Entities.Business
         public virtual ICollection<TrackerDevice> TrackerDevices { get; set; }
         public virtual ICollection<OrganizationShift> Shifts { get; set; }
         public virtual ICollection<User> Users { get; set; }
-        public virtual ICollection<Event> Events { get; set; }
+        public virtual ICollection<Holiday> Events { get; set; }
         public bool IsActive { get; set; }
         public string? Locale { get; set; }
         public string Currency { get; set; }
@@ -58,7 +58,7 @@ namespace Locato.Data.Entities.Business
             Users = new HashSet<User>();
             Routes = new HashSet<Route>();
             Shifts = new  HashSet<OrganizationShift>(); 
-            Events = new HashSet<Event>();   
+            Events = new HashSet<Holiday>();   
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

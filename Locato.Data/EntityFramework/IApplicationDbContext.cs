@@ -10,11 +10,6 @@ using Locato.Data.Entities.Transport.VehicleEntities;
 using Locato.Data.Entities.UserEntities;
 using Locato.Data.Entities.Validation;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Locato.Data.EntityFramework
 {
@@ -31,7 +26,8 @@ namespace Locato.Data.EntityFramework
         public DbSet<Organization> Organizations { get;  }
         public DbSet<Attachment> Attachments { get;  }
         public DbSet<StaticMedia> StaticMedias { get;  }
-        public DbSet<Event> Events { get;  }
+        public DbSet<Holiday> Holidays { get;  }
+        public DbSet<OrganizationShift> OrganizationShifts { get;  }
         public DbSet<OrganizationOffDay> OrganizationOffDays { get;  }
         public DbSet<Route> Routes { get;  }
         public DbSet<RouteGeoFenceCoordinate> RouteGeoFenceCoordinates { get;  }

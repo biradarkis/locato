@@ -101,6 +101,7 @@ namespace Locato.API
             services.AddDbContext<ApplicationDbContext>(options => {
                 options.UseNpgsql(connectionString)
                   .UseSnakeCaseNamingConvention();
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
             services.AddScoped<IApplicationDbContextSeed, ApplicationDbContextSeed>();
             services.AddMvcCore()

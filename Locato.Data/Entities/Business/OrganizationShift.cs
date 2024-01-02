@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 
 namespace Locato.Data.Entities.Business
 {
-    public class OrganizationShift : TrackedEntity
+    //Make this a tracked entity and do all sorts of things with it 
+    public class OrganizationShift : Entity
     {
         public long OrganizationId { get;set; }
         public Organization Organization { get;set; }
-        public DateTime  From { get;set; }
-        public DateTime  To { get;set; }
+        public TimeOnly From { get;set; }
+        public TimeOnly To { get;set; }
     }
 
     internal class OrganizationShiftConfiguration : IEntityTypeConfiguration<OrganizationShift>

@@ -17,6 +17,7 @@ namespace Locato.API.Endpoints.Useronboarding
             _mediator = mediator;
         }
         [HttpPost("changepassword")]
+        [Authorize]
         public override async Task<ActionResult<object>> HandleAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default)
         {
             var (Success, Error) = await _mediator.Send(new ResetPasswordCommand

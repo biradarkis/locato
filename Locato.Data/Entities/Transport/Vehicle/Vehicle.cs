@@ -20,7 +20,9 @@ namespace Locato.Data.Entities.Transport.VehicleEntities
         public string Name { get; set; }
 
         public string RegistrationNumber { get; set; }
-
+        /// <summary>
+        /// <see cref="VehicleType"/>
+        /// </summary>
         public string VehicleType { get; set; }
         public int SeatCapacity { get; set; }
         public long? TrackerDeviceId { get; set; }
@@ -126,5 +128,11 @@ namespace Locato.Data.Entities.Transport.VehicleEntities
        PEROL,
        DIESEL,
        CNG
+    }
+    public enum VehicleType
+    {
+        CAB,
+        BUS,
+        TRAVELER
     }
 }

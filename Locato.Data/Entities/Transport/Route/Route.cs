@@ -35,6 +35,8 @@ namespace Locato.Data.Entities.Transport.Routes
         public BaseLocation StartLocation { get; set; }
         public BaseLocation EndLocation { get; set; }
 
+        public long ShiftId { get;set; }
+        public OrganizationShift OrganizationShift { get; set; }
         public string Track { get; set; }
 
         public int AverageSpeed { get; set; }
@@ -85,6 +87,7 @@ namespace Locato.Data.Entities.Transport.Routes
             builder.HasMany(x => x.GeofenceCoordinates).WithOne(x => x.Route).HasForeignKey(x => x.RouteId);
             builder.OwnsOne(x => x.StartLocation);
             builder.OwnsOne(x => x.EndLocation);
+            builder.HasOne(x => x.OrganizationShift).WithMany().HasForeignKey(x => x.ShiftId);
         }
     }
 }

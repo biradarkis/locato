@@ -18,11 +18,13 @@ namespace Locato.Data.EntityFramework.Seed
         }
         public async Task Seed(CancellationToken cancellationToken)
         {
-            await SeedOrganization(cancellationToken); 
+            await SeedOrganization(cancellationToken);
+            await SeedOrganizationShifts(cancellationToken);
             await SeedProfiles(cancellationToken); 
             await SeedPhotos(cancellationToken);
             await SeedRoutes(cancellationToken);
             await SeedUsers(cancellationToken); 
         }
+
     }
 }

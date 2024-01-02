@@ -13,7 +13,7 @@ namespace Locato.Data.Entities.Scheduling
     /// <summary>
     /// While Adding new Entities check if there's already a event on that day 
     /// </summary>
-    public class Event : Entity , IValidatableObject
+    public class Holiday : Entity , IValidatableObject
     {
         public DateTime DateTime { get; set; }
         public required string Description { get; set; }
@@ -69,9 +69,9 @@ namespace Locato.Data.Entities.Scheduling
         }
     }
 
-    internal class EventConfiguration : IEntityTypeConfiguration<Event>
+    internal class EventConfiguration : IEntityTypeConfiguration<Holiday>
     {
-        public void Configure(EntityTypeBuilder<Event> builder)
+        public void Configure(EntityTypeBuilder<Holiday> builder)
         {
             
         }
