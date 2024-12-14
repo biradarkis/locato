@@ -148,6 +148,7 @@ namespace Locato.API
             {
                 if (env.IsDevelopment())
                 {
+
                     app.UseDeveloperExceptionPage();
                     app.UseSwagger();
                     app.UseSwaggerUI();
